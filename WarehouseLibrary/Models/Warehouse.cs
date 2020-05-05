@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using WarehouseLibrary.Models;
+using WarehouseLibrary.Data;
 
-namespace WarehouseLibrary
+namespace WarehouseLibrary.Models
 {
+    [Serializable]
     public class Warehouse
     {
         public List<Product> Products { get; private set; }
@@ -17,15 +18,6 @@ namespace WarehouseLibrary
             Supplies = new List<Supply>();
         }
 
-        public void Save()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Load()
-        {
-            throw new NotImplementedException();
-        }
         public void AddSupply(Supply supply)
         {
             Products.AddRange(supply.Products);
@@ -36,6 +28,16 @@ namespace WarehouseLibrary
         public void ReturnProducts()
         {
             throw new NotImplementedException();
+        }
+
+        public void Save()
+        {
+            new Dao(this).Save();
+        }
+
+        public void Load()
+        {
+            new Dao(this).Load();
         }
     }
 }

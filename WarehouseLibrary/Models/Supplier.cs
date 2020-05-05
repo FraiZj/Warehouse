@@ -1,5 +1,8 @@
-﻿namespace WarehouseLibrary.Models
+﻿using System;
+
+namespace WarehouseLibrary.Models
 {
+    [Serializable]
     public class Supplier
     {
         public int Id { get; set; }

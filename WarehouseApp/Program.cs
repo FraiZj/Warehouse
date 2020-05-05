@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using WarehouseLibrary;
 using WarehouseLibrary.Models;
 
 namespace WarehouseApp
@@ -12,7 +11,7 @@ namespace WarehouseApp
         static void Main(string[] args)
         {
             Warehouse warehouse = new Warehouse();
-            //warehouse.Load();
+            warehouse.Load();
 
             while (true)
             {
@@ -43,7 +42,7 @@ namespace WarehouseApp
 
                     Supply supply = new Supply(supplier, productList);
                     warehouse.AddSupply(supply);
-                    //warehouse.Save();
+                    warehouse.Save();
 
                     PrintPurchaseInvoice(supply, supplier, productList);
 
@@ -59,7 +58,9 @@ namespace WarehouseApp
                     throw new NotImplementedException();
                 }
                 else if (key == ConsoleKey.D4)
+                {
                     break;
+                }
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace WarehouseLibrary.Models
 {
+    [Serializable]
     public class Supply
     {
         public Supplier Supplier { get; private set; }

@@ -2,6 +2,7 @@
 
 namespace WarehouseLibrary.Models
 {
+    [Serializable]
     public class Product
     {
         public int Id { get; set; }
