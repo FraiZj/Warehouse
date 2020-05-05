@@ -1,6 +1,6 @@
 ﻿namespace WarehouseLibrary.Models
 {
-    class Supplier
+    public class Supplier
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -21,7 +21,7 @@
 
         public override string ToString()
         {
-            return Name;
+            return $"{Name,15}{PhoneNumber,15}{Address,20}";
         }
     }
 }

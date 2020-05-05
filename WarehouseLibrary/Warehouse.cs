@@ -4,11 +4,11 @@ using WarehouseLibrary.Models;
 
 namespace WarehouseLibrary
 {
-    class Warehouse
+    public class Warehouse
     {
-        public List<Product> Products { get; set; }
-        public List<Supplier> Suppliers { get; set; }
-        public List<Supply> Supplies { get; set; }
+        public List<Product> Products { get; private set; }
+        public List<Supplier> Suppliers { get; private set; }
+        public List<Supply> Supplies { get; private set; }
 
         public Warehouse()
         {
@@ -26,10 +26,11 @@ namespace WarehouseLibrary
         {
             throw new NotImplementedException();
         }
-
-        public void AddSupply()
+        public void AddSupply(Supply supply)
         {
-            throw new NotImplementedException();
+            Products.AddRange(supply.Products);
+            Suppliers.Add(supply.Supplier);
+            Supplies.Add(supply);
         }
 
         public void ReturnProducts()

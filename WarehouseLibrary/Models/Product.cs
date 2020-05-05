@@ -5,18 +5,18 @@ namespace WarehouseLibrary.Models
     public class Product
     {
         public int Id { get; set; }
-        private string Name { get; set; }
-        private string Unit { get; set; }
-        private int Count { get; set; }
-        private double Price { get; set; }
-        private DateTime ReceiptDate { get; set; }
+        public string Name { get; set; }
+        public string Unit { get; set; }
+        public int Count { get; set; }
+        public decimal Price { get; set; }
+        public DateTime ReceiptDate { get; set; }
 
         public Product()
         {
 
         }
 
-        public Product(string name, string unit, int count, double price)
+        public Product(string name, string unit, int count, decimal price)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
