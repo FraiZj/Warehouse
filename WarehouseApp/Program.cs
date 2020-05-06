@@ -6,8 +6,6 @@ namespace WarehouseApp
 {
     class Program
     {
-        static readonly string ProductInfo = $"{"№",5}{"Наименование",15}{"Ед. измер.",10}{"Количество",10}{"Цена",10}";
-
         static void Main(string[] args)
         {
             Warehouse warehouse = new Warehouse();
@@ -42,9 +40,7 @@ namespace WarehouseApp
 
                     Supply supply = new Supply(supplier, productList);
                     warehouse.AddSupply(supply);
-                    warehouse.Save();
-
-                    PrintPurchaseInvoice(supply, supplier, productList);
+                    warehouse.PrintPurchaseInvoice(supply);
 
                     Console.WriteLine("Нажмите любую кнопку, чтобы вернуться в меню");
                     Console.ReadKey();
@@ -62,28 +58,6 @@ namespace WarehouseApp
                     break;
                 }
             }
-        }
-
-        /// <summary>
-        /// Выводит приходную накладную
-        /// </summary>
-        /// <param name="supply"></param>
-        /// <param name="supplier"></param>
-        /// <param name="productList"></param>
-        static void PrintPurchaseInvoice(Supply supply, Supplier supplier, List<Product> productList)
-        {
-            Console.Clear();
-
-            Console.WriteLine("Поставщик: " + supplier.Name);
-            Console.WriteLine("Дата получения: " + supply.ReceiptDate + "\n");
-
-            Console.WriteLine(ProductInfo);
-            for (var i = 0; i < productList.Count; i++)
-            {
-                Console.WriteLine($"{(i + 1),5}{productList[i].Name,15}{productList[i].Unit,10}{productList[i].Count,10}{productList[i].Price,10}");
-            }
-
-            Console.WriteLine("\nВсего товаров: " + productList.Count + "\n");
         }
 
         /// <summary>
