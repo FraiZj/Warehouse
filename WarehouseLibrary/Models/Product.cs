@@ -11,17 +11,13 @@ namespace WarehouseLibrary.Models
         public int Count { get; set; }
         public decimal Price { get; set; }
         public DateTime ReceiptDate { get; set; }
-
-        public Product()
-        {
-
-        }
+        public Supply Supply { get; set; }
 
         public Product(string name, string unit, int count, decimal price)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(name), "Имя не может быть пустой строкой.");
+                throw new ArgumentNullException(nameof(name), "Наименование не может быть пустой строкой.");
             }
 
             if (string.IsNullOrWhiteSpace(unit))
@@ -36,7 +32,7 @@ namespace WarehouseLibrary.Models
 
             if (price <= 0)
             {
-                throw new ArgumentException("Цена не может быть меньше или равно нулю.", nameof(price));
+                throw new ArgumentException("Цена не может быть меньше или равна нулю.", nameof(price));
             }
 
 
@@ -49,7 +45,7 @@ namespace WarehouseLibrary.Models
 
         public override string ToString()
         {
-            return $"{Id,5}{Name,15}{Unit,15}{Count,15}{Price,15}{ReceiptDate.ToShortDateString(),20}";
+            return Name;
         }
     }
 }

@@ -10,13 +10,22 @@ namespace WarehouseLibrary.Models
         public string PhoneNumber { get; set; }
         public string Address  { get; set; }
 
-        public Supplier()
-        {
-            
-        }
-
         public Supplier(string name, string phoneNumber, string address)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name), "Имя не может быть пустой строкой.");
+            }
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name), "Номер телефона не может быть пустой строкой.");
+            }
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name), "Адрес не может быть пустой строкой.");
+            }
             Name = name;
             PhoneNumber = phoneNumber;
             Address = address;
@@ -24,7 +33,7 @@ namespace WarehouseLibrary.Models
 
         public override string ToString()
         {
-            return $"{Name,15}{PhoneNumber,15}{Address,20}";
+            return Name;
         }
     }
 }
