@@ -44,7 +44,7 @@ namespace WarehouseLibrary.Models
             Unit = unit;
             Count = count;
             Price = price;
-            ReceiptDate = DateTime.Today;
+            ReceiptDate = DateTime.Now;
         }
 
         public override string ToString()

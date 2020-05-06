@@ -14,7 +14,7 @@ namespace WarehouseLibrary.Models
         {
             Supplier = supplier;
             Products = products;
-            ReceiptDate = DateTime.Today;
+            ReceiptDate = DateTime.Now;
         }
 
         public override string ToString()

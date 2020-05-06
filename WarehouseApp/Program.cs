@@ -16,7 +16,7 @@ namespace WarehouseApp
                 Console.Clear();
                 Console.WriteLine("1.Формирование приходной накладной");
                 Console.WriteLine("2.Формирование расходной накладной");
-                Console.WriteLine("3.Перечень товаров на складе");
+                Console.WriteLine("3.Список товаров на складе");
                 Console.WriteLine("4.Выход");
                 var key = Console.ReadKey().Key;
 
@@ -51,7 +51,10 @@ namespace WarehouseApp
                 }
                 else if (key == ConsoleKey.D3)
                 {
-                    throw new NotImplementedException();
+                    Console.Clear();
+                    warehouse.PrintAllProducts();
+                    Console.WriteLine("Нажмите любую кнопку, чтобы вернуться в меню");
+                    Console.ReadKey();
                 }
                 else if (key == ConsoleKey.D4)
                 {
