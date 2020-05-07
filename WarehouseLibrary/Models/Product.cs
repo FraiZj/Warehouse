@@ -16,24 +16,16 @@ namespace WarehouseLibrary.Models
         public Product(string name, string unit, int count, decimal price)
         {
             if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentNullException(nameof(name), "Наименование не может быть пустой строкой.");
-            }
+                throw new ArgumentNullException(nameof(name), "Наименование не может быть null или пустой строкой.");
 
             if (string.IsNullOrWhiteSpace(unit))
-            {
-                throw new ArgumentNullException(nameof(name), "Единица измерения не может быть пустой строкой.");
-            }
+                throw new ArgumentNullException(nameof(name), "Единица измерения не может быть null или пустой строкой.");
 
-            if (count < 1)
-            {
+            if (count <= 0)
                 throw new ArgumentException("Количество не может быть меньше или равно нулю.", nameof(count));
-            }
 
             if (price <= 0)
-            {
                 throw new ArgumentException("Цена не может быть меньше или равна нулю.", nameof(price));
-            }
 
 
             Name = name;

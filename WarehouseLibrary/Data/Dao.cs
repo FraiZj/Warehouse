@@ -15,6 +15,9 @@ namespace WarehouseLibrary.Data
             _warehouse = warehouse;
         }
 
+        /// <summary>
+        /// Сохраняет данные в двоичный файл
+        /// </summary>
         public void Save()
         {
             using (var fs = new FileStream(FilePath, FileMode.Create))
@@ -24,6 +27,9 @@ namespace WarehouseLibrary.Data
             }
         }
 
+        /// <summary>
+        /// Загружает данные в двоичного файла
+        /// </summary>
         public void Load()
         {
             using (var fs = new FileStream(FilePath, FileMode.OpenOrCreate))

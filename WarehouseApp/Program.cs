@@ -19,12 +19,12 @@ namespace WarehouseApp
                 Console.WriteLine("2.Формирование расходной накладной");
                 Console.WriteLine("3.Список товаров на складе");
                 Console.WriteLine("4.Выход");
-                var key = Console.ReadKey().Key;
+                ConsoleKey key = Console.ReadKey().Key;
 
                 if (key == ConsoleKey.D1)
                 {
                     Supplier supplier = RegisterSupplier();
-                    var productList = new List<Product>();
+                    List<Product> productList = new List<Product>();
 
                     while (true)
                     {
@@ -55,15 +55,15 @@ namespace WarehouseApp
                     }
 
                     string recipient = InputString("Получатель");
-                    var productList = new List<(Product, int)>();
+                    List<(Product, int)> productList = new List<(Product, int)>();
 
                     while (true)
                     {
                         Console.Clear();
                         warehouse.PrintAllProducts();
-                        var number = InputProductNumber(warehouse.Products.Count);
+                        int number = InputProductNumber(warehouse.Products.Count);
                         warehouse.PrintProduct(number - 1);
-                        var count = InputSalesProductCount(warehouse.Products[number - 1].Count);
+                        int count = InputSalesProductCount(warehouse.Products[number - 1].Count);
                         productList.Add((warehouse.GetProduct(number - 1, count), count));
 
                         Console.Write("Enter - продолжить ввод \n" +
@@ -109,9 +109,9 @@ namespace WarehouseApp
         {
             Console.Clear();
             Console.WriteLine("Данные поставщика:");
-            var name = InputString("Наименование");
-            var phoneNumber = InputString("Номер телефона");
-            var address = InputString("Адрес");
+            string name = InputString("Наименование");
+            string phoneNumber = InputString("Номер телефона");
+            string address = InputString("Адрес");
 
             return new Supplier(name, phoneNumber, address);
         }
@@ -124,16 +124,16 @@ namespace WarehouseApp
         {
             Console.Clear();
             Console.WriteLine("Данные товара:");
-            var name = InputString("Наименование");
-            var unit = InputString("Единица измерения");
-            var count = InputInt("Количество");
-            var price = InputDecimal("Цена (за единицу товара)");
+            string name = InputString("Наименование");
+            string unit = InputString("Единица измерения");
+            int count = InputInt("Количество");
+            decimal price = InputDecimal("Цена (за единицу товара)");
 
             return new Product(name, unit, count, price);
         }
 
         /// <summary>
-        /// Проверяет введенное пользователем значение и возваращает его
+        /// Проверяет введенное пользователем значение и возвращает его
         /// </summary>
         /// <param name="nameOfField"></param>
         /// <returns></returns>
@@ -142,7 +142,7 @@ namespace WarehouseApp
             while (true)
             {
                 Console.Write($"{nameOfField} - ");
-                var value = Console.ReadLine();
+                string value = Console.ReadLine();
                 if (!string.IsNullOrWhiteSpace(value))
                 {
                     return value;
@@ -153,7 +153,7 @@ namespace WarehouseApp
         }
 
         /// <summary>
-        /// Проверяет введенное пользователем значение и возваращает его
+        /// Проверяет введенное пользователем значение и возвращает его
         /// </summary>
         /// <param name="nameOfField"></param>
         /// <returns></returns>
@@ -173,7 +173,7 @@ namespace WarehouseApp
         }
 
         /// <summary>
-        /// Проверяет введенное пользователем значение и возваращает его
+        /// Проверяет введенное пользователем значение и возвращает его
         /// </summary>
         /// <param name="nameOfField"></param>
         /// <returns></returns>
@@ -192,7 +192,7 @@ namespace WarehouseApp
         }
 
         /// <summary>
-        /// Проверяет введенное пользователем значение и возваращает его
+        /// Проверяет введенное пользователем значение и возвращает его
         /// </summary>
         /// <param name="count"></param>
         /// <returns></returns>
@@ -200,7 +200,7 @@ namespace WarehouseApp
         {
             while (true)
             {
-                var value = InputInt("Номер товара");
+                int value = InputInt("Номер товара");
                 if (value < 1 || value > count)
                 {
                     Console.WriteLine("Нет товара с таким номером. Введите значение заново.");
@@ -212,7 +212,7 @@ namespace WarehouseApp
         }
 
         /// <summary>
-        /// Проверяет введенное пользователем значение и возваращает его
+        /// Проверяет введенное пользователем значение и возвращает его
         /// </summary>
         /// <param name="productCount"></param>
         /// <returns></returns>
@@ -220,7 +220,7 @@ namespace WarehouseApp
         {
             while (true)
             {
-                var value = InputInt("Количество");
+                int value = InputInt("Количество");
 
                 if (value < 1)
                 {
