@@ -2,18 +2,25 @@
 using System.Collections.Generic;
 using WarehouseLibrary.Models;
 
+// TODO: Добавить сохранение приходной и расходной в файл возможностью загрузить их в программу
+// TODO: Добавить поиск по товарам
+
 namespace WarehouseApp
 {
     class Program
     {
+        private const string ErrorMessage = "Неверный формат поля или значение. Введите значение заново.";
+        private const string ClickAnyButtonMessage = "Нажмите любую клавишу, чтобы вернуться в меню.";
+        
         static void Main(string[] args)
         {
+            Console.WindowWidth = 135;
+            Console.Title = "Warehouse";
             Warehouse warehouse = new Warehouse();
             warehouse.Load();
 
             while (true)
             {
-                Console.Title = "Warehouse";
                 Console.Clear();
                 Console.WriteLine("1.Формирование приходной накладной");
                 Console.WriteLine("2.Формирование расходной накладной");
@@ -25,22 +32,58 @@ namespace WarehouseApp
                 {
                     Supplier supplier = RegisterSupplier();
                     List<Product> productList = new List<Product>();
+                    List<(Product, Product)> duplicateList = new List<(Product, Product)>();
 
                     while (true)
                     {
-                        productList.Add(RegisterProduct());
+                        var product = RegisterProduct(supplier);
+                        Product duplicate = warehouse.DuplicateProduct(product);
 
-                        Console.Write("Enter - продолжить ввод \n" +
+                        if (duplicate != null)
+                        {
+
+                            Console.Write("\nНа складе находится такой же товар.\n" +
+                                              "1.Создать новую запись\n" +
+                                              "2.Соединить товары в одну запись");
+
+                            if (Console.ReadKey().Key == ConsoleKey.D1)
+                            {
+                                productList.Add(product);
+                            }
+                            else
+                            {
+                                duplicateList.Add((product, duplicate));
+                            }
+                        }
+                        else
+                        {
+                            productList.Add(product);
+                        }
+
+                        Console.Write("\n\nEnter - добавить еще один товар \n" +
                                       "Esc - вернуться в меню");
+
                         if (Console.ReadKey().Key != ConsoleKey.Enter)
+                        {
                             break;
+                        }
                     }
 
-                    Supply supply = new Supply(supplier, productList);
-                    warehouse.AddSupply(supply);
-                    warehouse.PrintPurchaseInvoice(supply);
+                    if (productList.Count > 0)
+                    {
+                        warehouse.AddSupply(new Supply(supplier, productList));
+                    }
 
-                    Console.Write("Нажмите любую кнопку, чтобы вернуться в меню");
+                    foreach ((Product product, Product duplicate) in duplicateList)
+                    {
+                        warehouse.AddSomeCountOfProduct(duplicate, product.Count);
+                        productList.Add(product);
+                    }
+
+                    warehouse.Save();
+                    warehouse.PrintPurchaseInvoice(new Supply(supplier, productList));
+
+                    Console.Write(ClickAnyButtonMessage);
                     Console.ReadKey();
                 }
                 else if (key == ConsoleKey.D2)
@@ -49,33 +92,50 @@ namespace WarehouseApp
                     if (warehouse.Products.Count == 0)
                     {
                         Console.WriteLine("Склад пуст.");
-                        Console.Write("Нажмите любую кнопку, чтобы вернуться в меню");
-                        Console.ReadKey();
-                        continue;
                     }
-
-                    string recipient = InputString("Получатель");
-                    List<(Product, int)> productList = new List<(Product, int)>();
-
-                    while (true)
+                    else
                     {
-                        Console.Clear();
-                        warehouse.PrintAllProducts();
-                        int number = InputProductNumber(warehouse.Products.Count);
-                        warehouse.PrintProduct(number - 1);
-                        int count = InputSalesProductCount(warehouse.Products[number - 1].Count);
-                        productList.Add((warehouse.GetProduct(number - 1, count), count));
 
-                        Console.Write("Enter - продолжить ввод \n" +
-                                      "Esc - вернуться в меню");
-                        if (Console.ReadKey().Key != ConsoleKey.Enter)
-                            break;
+                        string recipient = InputString("Покупатель");
+                        List<(Product, int)> productList = new List<(Product, int)>();
+
+                        while (true)
+                        {
+                            Console.Clear();
+
+                            if (warehouse.Products.Count == 0)
+                            {
+                                Console.WriteLine("Склад пуст.");
+                                Console.WriteLine(ClickAnyButtonMessage);
+                                Console.ReadKey();
+                                break;
+                            }
+
+                            warehouse.PrintAllProducts();
+                            int number = InputProductNumber(warehouse.Products.Count);
+                            int count = InputSalesProductCount(warehouse.Products[number - 1].Count);
+                            Product product = warehouse.Products[number - 1];
+                            warehouse.RemoveSomeCountOfProduct(product, count);
+                            productList.Add((product, count));
+
+                            if (warehouse.Products.Count == 0)
+                            {
+                                break;
+                            }
+
+                            Console.Write("Enter - продолжить ввод \n" +
+                                          "Esc - вернуться в меню");
+                            if (Console.ReadKey().Key != ConsoleKey.Enter)
+                            {
+                                break;
+                            }
+                        }
+
+                        warehouse.Save();
+                        warehouse.PrintSalesInvoice(recipient, productList);
                     }
 
-                    warehouse.Save();
-                    warehouse.PrintSalesInvoice(recipient, productList);
-
-                    Console.Write("Нажмите любую кнопку, чтобы вернуться в меню");
+                    Console.Write(ClickAnyButtonMessage);
                     Console.ReadKey();
                 }
                 else if (key == ConsoleKey.D3)
@@ -84,14 +144,14 @@ namespace WarehouseApp
                     if (warehouse.Products.Count == 0)
                     {
                         Console.WriteLine("Склад пуст.");
-                        Console.Write("Нажмите любую кнопку, чтобы вернуться в меню");
-                        Console.ReadKey();
-                        continue;
+                    }
+                    else
+                    {
+                         warehouse.PrintAllProducts();
+                         Console.WriteLine($"\nВсего товаров: {warehouse.Products.Count}\n");
                     }
 
-                    warehouse.PrintAllProducts();
-                    Console.WriteLine($"\nВсего товаров: {warehouse.Products.Count}");
-                    Console.Write("Нажмите любую кнопку, чтобы вернуться в меню");
+                    Console.Write(ClickAnyButtonMessage);
                     Console.ReadKey();
                 }
                 else if (key == ConsoleKey.D4)
@@ -102,7 +162,7 @@ namespace WarehouseApp
         }
 
         /// <summary>
-        /// Регистрирует данные поставщика
+        /// Регистрирует данные поставщика и возвращает его
         /// </summary>
         /// <returns></returns>
         private static Supplier RegisterSupplier()
@@ -117,23 +177,23 @@ namespace WarehouseApp
         }
 
         /// <summary>
-        /// Регистрирует данные товаров
+        /// Регистрирует данные товара и возваращает его
         /// </summary>
         /// <returns></returns>
-        private static Product RegisterProduct()
+        private static Product RegisterProduct(Supplier supplier)
         {
             Console.Clear();
             Console.WriteLine("Данные товара:");
             string name = InputString("Наименование");
             string unit = InputString("Единица измерения");
-            int count = InputInt("Количество");
-            decimal price = InputDecimal("Цена (за единицу товара)");
+            int count = InputPositiveInt("Количество");
+            decimal price = InputPositiveDecimal("Цена (за единицу товара)");
 
-            return new Product(name, unit, count, price);
+            return new Product(name, unit, count, price, supplier);
         }
 
         /// <summary>
-        /// Проверяет введенное пользователем значение и возвращает его
+        /// Проверяет не является ли введенное значение null или пустой строкой и возвращает его
         /// </summary>
         /// <param name="nameOfField"></param>
         /// <returns></returns>
@@ -143,56 +203,58 @@ namespace WarehouseApp
             {
                 Console.Write($"{nameOfField} - ");
                 string value = Console.ReadLine();
+
                 if (!string.IsNullOrWhiteSpace(value))
                 {
-                    return value;
+                    return value.Trim();
                 }
 
-                Console.WriteLine($"Неверный формат поля. Введите значение заново.");
+                Console.WriteLine(ErrorMessage);
             }
         }
 
         /// <summary>
-        /// Проверяет введенное пользователем значение и возвращает его
+        /// Проверяет является ли введенное значение положительным целым числом и возвращает его
         /// </summary>
         /// <param name="nameOfField"></param>
         /// <returns></returns>
-        private static decimal InputDecimal(string nameOfField)
+        private static decimal InputPositiveDecimal(string nameOfField)
         {
             while (true)
             {
                 Console.Write($"{nameOfField} - ");
 
-                if (decimal.TryParse(Console.ReadLine(), out var value) && value > 0)
+                if (decimal.TryParse(Console.ReadLine(), out decimal value) && value > 0)
                 {
                     return value;
                 }
 
-                Console.WriteLine($"Неверный формат или значение. Введите значение заново.");
+                Console.WriteLine(ErrorMessage);
             }
         }
 
         /// <summary>
-        /// Проверяет введенное пользователем значение и возвращает его
+        /// Проверяет является ли введенное значение положительным десятичным числом и возвращает его
         /// </summary>
         /// <param name="nameOfField"></param>
         /// <returns></returns>
-        private static int InputInt(string nameOfField)
+        private static int InputPositiveInt(string nameOfField)
         {
             while (true)
             {
                 Console.Write($"{nameOfField} - ");
-                if (int.TryParse(Console.ReadLine(), out var value) && value > 0)
+
+                if (int.TryParse(Console.ReadLine(), out int value) && value > 0)
                 {
                     return value;
                 }
 
-                Console.WriteLine($"Неверный формат или значение. Введите значение заново.");
+                Console.WriteLine(ErrorMessage);
             }
         }
 
         /// <summary>
-        /// Проверяет введенное пользователем значение и возвращает его
+        /// Проверяет находится ли введенное значение в диапазоне от нуля до заданного значения и возвращает его
         /// </summary>
         /// <param name="count"></param>
         /// <returns></returns>
@@ -200,7 +262,8 @@ namespace WarehouseApp
         {
             while (true)
             {
-                int value = InputInt("Номер товара");
+                int value = InputPositiveInt("Номер товара");
+
                 if (value < 1 || value > count)
                 {
                     Console.WriteLine("Нет товара с таким номером. Введите значение заново.");
@@ -212,7 +275,7 @@ namespace WarehouseApp
         }
 
         /// <summary>
-        /// Проверяет введенное пользователем значение и возвращает его
+        /// Проверяет не превышает ли введенное значение количество товара на складе и возвращает его
         /// </summary>
         /// <param name="productCount"></param>
         /// <returns></returns>
@@ -220,13 +283,7 @@ namespace WarehouseApp
         {
             while (true)
             {
-                int value = InputInt("Количество");
-
-                if (value < 1)
-                {
-                    Console.WriteLine("Значение не может быть меньше либо равно нулю. Введите значение заново.");
-                    continue;
-                }
+                int value = InputPositiveInt("Количество");
 
                 if (value > productCount)
                 {
