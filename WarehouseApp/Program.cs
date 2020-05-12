@@ -12,7 +12,8 @@ namespace WarehouseApp
     {
         private const string ErrorMessage = "Неверный формат поля или значение. Введите значение заново.";
         private const string ClickAnyButtonMessage = "Нажмите любую клавишу, чтобы вернуться в меню.";
-        private const string PurchaseInvoicePath = "purchaseInvoices";
+        private const string PurchaseInvoiceDirectoryPath = "purchaseInvoices";
+        private const string SalesInvoicesDirectoryPath = "salesInvoices";
 
 
         static void Main(string[] args)
@@ -30,7 +31,8 @@ namespace WarehouseApp
                 Console.WriteLine("3.Список товаров на складе");
                 Console.WriteLine("4.Поиск товара");
                 Console.WriteLine("5.Просмотр приходных накладных");
-                Console.WriteLine("6.Выход");
+                Console.WriteLine("6.Просмотр расходных накладных");
+                Console.WriteLine("7.Выход");
                 ConsoleKey key = Console.ReadKey().Key;
 
                 if (key == ConsoleKey.D1)
@@ -186,12 +188,19 @@ namespace WarehouseApp
                 }
                 else if (key == ConsoleKey.D5)
                 {
-                    if (Directory.Exists(PurchaseInvoicePath))
+                    if (Directory.Exists(PurchaseInvoiceDirectoryPath))
                     {
-                        Process.Start(PurchaseInvoicePath);
+                        Process.Start(PurchaseInvoiceDirectoryPath);
                     }
                 }
                 else if (key == ConsoleKey.D6)
+                {
+                    if (Directory.Exists(SalesInvoicesDirectoryPath))
+                    {
+                        Process.Start(SalesInvoicesDirectoryPath);
+                    }
+                }
+                else if (key == ConsoleKey.D7)
                 {
                     break;
                 }

@@ -168,6 +168,8 @@ namespace WarehouseLibrary.Models
 
             Console.WriteLine($"\nВсего товаров: {products.Count}");
             Console.WriteLine($"Итоговая стоимость: {totalCost}\n");
+
+            Dao.SaveSalesInvoice(recipient, products);
         }
 
         /// <summary>

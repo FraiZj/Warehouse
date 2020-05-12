@@ -10,9 +10,11 @@ namespace WarehouseLibrary.Data
     {
         private const string FilePath = "warehouse.bin";
         private const string PurchaseInvoicesDirectoryPath = "purchaseInvoices";
+        private const string SalesInvoicesDirectoryPath = "salesInvoices";
+
         private readonly Warehouse _warehouse;
 
-        public Dao(Warehouse warehouse)
+        internal Dao(Warehouse warehouse)
         {
             _warehouse = warehouse;
         }
@@ -20,7 +22,7 @@ namespace WarehouseLibrary.Data
         /// <summary>
         /// Сохраняет данные в двоичный файл
         /// </summary>
-        public void Save()
+        internal void Save()
         {
             using (var fs = new FileStream(FilePath, FileMode.Create))
             {
@@ -32,7 +34,7 @@ namespace WarehouseLibrary.Data
         /// <summary>
         /// Загружает данные c двоичного файла
         /// </summary>
-        public void Load()
+        internal void Load()
         {
             using (var fs = new FileStream(FilePath, FileMode.OpenOrCreate))
             {
@@ -61,14 +63,24 @@ namespace WarehouseLibrary.Data
         /// </summary>
         /// <param name="supply"></param>
         /// <param name="totalCost"></param>
-        public static void SavePurchaseInvoices(Supply supply)
+        internal static void SavePurchaseInvoices(Supply supply)
         {
             if (supply is null)
             {
                 throw new ArgumentNullException(nameof(supply));
             }
 
-            var numberFiles = new DirectoryInfo(PurchaseInvoicesDirectoryPath).GetFiles().Length;
+            var numberFiles = 0;
+
+            if (Directory.Exists(PurchaseInvoicesDirectoryPath))
+            {
+                numberFiles = new DirectoryInfo(PurchaseInvoicesDirectoryPath).GetFiles().Length;
+            }
+            else
+            {
+                Directory.CreateDirectory(PurchaseInvoicesDirectoryPath);
+            }
+
             var path = $"{PurchaseInvoicesDirectoryPath}\\{(numberFiles + 1)}_{supply.Supplier.Name}_{supply.ReceiptDate.ToString("dd-MM-yyyy")}.txt";
 
             using (var wr = new StreamWriter(path))
@@ -85,6 +97,62 @@ namespace WarehouseLibrary.Data
 
                 wr.WriteLine($"\nВсего товаров: {supply.Products.Count}");
                 wr.WriteLine($"Итоговая стоимость: {supply.TotalCost}\n");
+            }
+        }
+
+        /// <summary>
+        /// Сохраняет расходную накладную
+        /// </summary>
+        /// <param name="recipient"></param>
+        /// <param name="products"></param>
+        internal static void SaveSalesInvoice(string recipient, List<(Product, int)> products)
+        {
+            if (string.IsNullOrWhiteSpace(recipient))
+            {
+                throw new ArgumentNullException(nameof(recipient), "Получатель не может быть null или пустой строкой.");
+            }
+
+            if (products is null || products.Count == 0)
+            {
+                throw new ArgumentNullException(nameof(products), "Список продуктов не может быть пустым или null.");
+            }
+
+            var numberFiles = 0;
+
+            if (Directory.Exists(SalesInvoicesDirectoryPath))
+            {
+                numberFiles = new DirectoryInfo(SalesInvoicesDirectoryPath).GetFiles().Length;
+            }
+            else
+            {
+                Directory.CreateDirectory(SalesInvoicesDirectoryPath);
+            }
+
+            var path = $"{SalesInvoicesDirectoryPath}\\{(numberFiles + 1)}_{recipient}_{products[0].Item1.ReceiptDate.ToString("dd-MM-yyyy")}.txt";
+
+            using (var wr = new StreamWriter(path))
+            {
+                int counter = 1;
+                decimal totalCost = 0;
+
+                wr.WriteLine($"Расходная накладная от {DateTime.Now.ToShortDateString()}");
+                wr.WriteLine($"Получатель: {recipient}\n");
+
+                wr.WriteLine($"{"№",5}{"Наименование",20}{"Ед. измерения",15}{"Количество",15}" +
+                                  $"{"Цена",15}{"Дата получения",20}{"Поставщик",20}{"Номер телефона",20}");
+
+                foreach ((Product product, int count) in products)
+                {
+
+                    wr.WriteLine($"{counter++,5}{product.Name,20}{product.Unit,15}{count,15}" +
+                                      $"{product.Price,15}{product.ReceiptDate.ToShortDateString(),20}" +
+                                      $"{product.Supply.Supplier.Name,20}{product.Supply.Supplier.PhoneNumber,20}");
+
+                    totalCost += product.Price * count;
+                }
+
+                wr.WriteLine($"\nВсего товаров: {products.Count}");
+                wr.WriteLine($"Итоговая стоимость: {totalCost}\n");
             }
         }
     }
