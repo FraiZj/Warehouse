@@ -151,7 +151,7 @@ namespace WarehouseLibrary.Models
                 throw new ArgumentNullException(nameof(products), "Список продуктов не может быть пустым или null.");
             }
 
-            int i = 1;
+            int counter = 1;
             decimal totalCost = 0;
 
             Console.Clear();
@@ -164,7 +164,7 @@ namespace WarehouseLibrary.Models
             foreach ((Product product, int count) in products)
             {
 
-                Console.WriteLine($"{i++,5}{product.Name,20}{product.Unit,15}{count,15}" +
+                Console.WriteLine($"{counter++,5}{product.Name,20}{product.Unit,15}{count,15}" +
                                   $"{product.Price,15}{product.ReceiptDate.ToShortDateString(),20}" +
                                   $"{product.Supply.Supplier.Name,20}{product.Supply.Supplier.PhoneNumber,20}");
 
@@ -173,6 +173,26 @@ namespace WarehouseLibrary.Models
 
             Console.WriteLine($"\nВсего товаров: {products.Count}");
             Console.WriteLine($"Итоговая стоимость: {totalCost}\n");
+        }
+
+        public void PrintProducts(List<Product> products)
+        {
+            int counter = 0;
+            Console.WriteLine($"{"№",5}{"Наименование",20}{"Ед. измерения",15}{"Количество",15}" +
+                              $"{"Цена",15}{"Дата получения",20}{"Поставщик",20}{"Номер телефона",20}");
+
+            foreach (Product product in products)
+            {
+
+                Console.WriteLine($"{counter++,5}{product.Name,20}{product.Unit,15}{product.Count,15}" +
+                                  $"{product.Price,15}{product.ReceiptDate.ToShortDateString(),20}" +
+                                  $"{product.Supply.Supplier.Name,20}{product.Supply.Supplier.PhoneNumber,20}");
+            }
+        }
+
+        public List<Product> SearchProducts(string name)
+        {
+            return Products.Where(p => p.Name == name).ToList();
         }
 
         /// <summary>

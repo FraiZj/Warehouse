@@ -25,7 +25,8 @@ namespace WarehouseApp
                 Console.WriteLine("1.Формирование приходной накладной");
                 Console.WriteLine("2.Формирование расходной накладной");
                 Console.WriteLine("3.Список товаров на складе");
-                Console.WriteLine("4.Выход");
+                Console.WriteLine("4.Поиск товара");
+                Console.WriteLine("5.Выход");
                 ConsoleKey key = Console.ReadKey().Key;
 
                 if (key == ConsoleKey.D1)
@@ -155,6 +156,31 @@ namespace WarehouseApp
                     Console.ReadKey();
                 }
                 else if (key == ConsoleKey.D4)
+                {
+                    while (true)
+                    {
+                        Console.Clear();
+                        var name = InputString("Наименование");
+                        var products = warehouse.SearchProducts(name);
+
+                        if (products.Count == 0)
+                        {
+                            Console.WriteLine("Товар не найден.");
+                        }
+                        else
+                        {
+                            warehouse.PrintProducts(products);
+                        }
+
+                        Console.Write("\nEnter - искать другой товар \n" + 
+                                      "Esc - вернуться в меню");
+                        if (Console.ReadKey().Key != ConsoleKey.Enter)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else if (key == ConsoleKey.D5)
                 {
                     break;
                 }
