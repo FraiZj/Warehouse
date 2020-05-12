@@ -56,13 +56,6 @@ namespace WarehouseLibrary.Models
         /// <param name="supply"></param>
         public void PrintPurchaseInvoice(Supply supply)
         {
-            if (supply is null)
-            {
-                throw new ArgumentNullException(nameof(supply), "Поставка не может быть null.");
-            }
-
-            decimal totalCost = 0;
-
             Console.Clear();
             Console.WriteLine($"Приходная накладная от {supply.ReceiptDate.ToShortDateString()}");
             Console.WriteLine($"Поставщик: {supply.Supplier.Name}\n");
@@ -73,11 +66,13 @@ namespace WarehouseLibrary.Models
                 Product product = supply.Products[i];
                 Console.WriteLine($"{(i + 1),5}{product.Name,20}{product.Unit,15}{product.Count,15}{product.Price,15}");
 
-                totalCost += product.Price * product.Count;
+                supply.TotalCost += product.Price * product.Count;
             }
 
             Console.WriteLine($"\nВсего товаров: {supply.Products.Count}");
-            Console.WriteLine($"Итоговая стоимость: {totalCost}\n");
+            Console.WriteLine($"Итоговая стоимость: {supply.TotalCost}\n");
+
+            Dao.SavePurchaseInvoices(supply);
         }
 
         /// <summary>
@@ -175,9 +170,13 @@ namespace WarehouseLibrary.Models
             Console.WriteLine($"Итоговая стоимость: {totalCost}\n");
         }
 
+        /// <summary>
+        /// Вывводит список заданных товаров
+        /// </summary>
+        /// <param name="products"></param>
         public void PrintProducts(List<Product> products)
         {
-            int counter = 0;
+            int counter = 1;
             Console.WriteLine($"{"№",5}{"Наименование",20}{"Ед. измерения",15}{"Количество",15}" +
                               $"{"Цена",15}{"Дата получения",20}{"Поставщик",20}{"Номер телефона",20}");
 
@@ -190,6 +189,11 @@ namespace WarehouseLibrary.Models
             }
         }
 
+        /// <summary>
+        /// Возвращает список товаров с заданным именем
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public List<Product> SearchProducts(string name)
         {
             return Products.Where(p => p.Name == name).ToList();

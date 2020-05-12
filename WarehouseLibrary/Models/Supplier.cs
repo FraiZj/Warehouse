@@ -5,9 +5,9 @@ namespace WarehouseLibrary.Models
     [Serializable]
     public class Supplier
     {
-        public string Name { get; }
-        public string PhoneNumber { get; }
-        public string Address  { get; }
+        public string Name { get; internal set; }
+        public string PhoneNumber { get; internal set; }
+        public string Address  { get; internal set; }
 
         /// <summary>
         /// Инициализирует новый экземпляр класса Supplier

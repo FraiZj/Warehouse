@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using WarehouseLibrary.Models;
@@ -7,7 +8,8 @@ namespace WarehouseLibrary.Data
 {
     class Dao
     {
-        const string FilePath = "warehouse.bin";
+        private const string FilePath = "warehouse.bin";
+        private const string PurchaseInvoicesDirectoryPath = "purchaseInvoices";
         private readonly Warehouse _warehouse;
 
         public Dao(Warehouse warehouse)
@@ -28,7 +30,7 @@ namespace WarehouseLibrary.Data
         }
 
         /// <summary>
-        /// Загружает данные в двоичного файла
+        /// Загружает данные c двоичного файла
         /// </summary>
         public void Load()
         {
@@ -51,6 +53,38 @@ namespace WarehouseLibrary.Data
             {
                 to.Clear();
                 to.AddRange(from);
+            }
+        }
+
+        /// <summary>
+        /// Сохраняет приходную накладную
+        /// </summary>
+        /// <param name="supply"></param>
+        /// <param name="totalCost"></param>
+        public static void SavePurchaseInvoices(Supply supply)
+        {
+            if (supply is null)
+            {
+                throw new ArgumentNullException(nameof(supply));
+            }
+
+            var numberFiles = new DirectoryInfo(PurchaseInvoicesDirectoryPath).GetFiles().Length;
+            var path = $"{PurchaseInvoicesDirectoryPath}\\{(numberFiles + 1)}_{supply.Supplier.Name}_{supply.ReceiptDate.ToString("dd-MM-yyyy")}.txt";
+
+            using (var wr = new StreamWriter(path))
+            {
+                wr.WriteLine($"Приходная накладная от {supply.ReceiptDate.ToShortDateString()}");
+                wr.WriteLine($"Поставщик: {supply.Supplier.Name}\n");
+                wr.WriteLine($"{"№",5}{"Наименование",20}{"Ед. измер.",15}{"Количество",15}{"Цена",15}");
+
+                for (var i = 0; i < supply.Products.Count; i++)
+                {
+                    Product product = supply.Products[i];
+                    wr.WriteLine($"{(i + 1),5}{product.Name,20}{product.Unit,15}{product.Count,15}{product.Price,15}");
+                }
+
+                wr.WriteLine($"\nВсего товаров: {supply.Products.Count}");
+                wr.WriteLine($"Итоговая стоимость: {supply.TotalCost}\n");
             }
         }
     }

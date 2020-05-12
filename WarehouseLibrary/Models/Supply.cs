@@ -9,6 +9,7 @@ namespace WarehouseLibrary.Models
         public Supplier Supplier { get; internal set;  }
         public List<Product> Products { get; internal set; }
         public DateTime ReceiptDate { get; internal set; }
+        public decimal TotalCost { get; set; }
 
         /// <summary>
         /// Инициализирует новый экземпляр класса Supply

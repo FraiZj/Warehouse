@@ -5,11 +5,11 @@ namespace WarehouseLibrary.Models
     [Serializable]
     public class Product
     {
-        public string Name { get; }
-        public string Unit { get; }
+        public string Name { get; internal set; }
+        public string Unit { get; internal set; }
         public int Count { get; internal set; }
         public decimal Price { get; internal set; }
-        public DateTime ReceiptDate { get; }
+        public DateTime ReceiptDate { get; internal set; }
         public Supplier Supplier { get; internal set; }
         public Supply Supply { get; internal set; }
 

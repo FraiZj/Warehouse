@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using WarehouseLibrary.Models;
 
 // TODO: Добавить сохранение приходной и расходной в файл возможностью загрузить их в программу
-// TODO: Добавить поиск по товарам
 
 namespace WarehouseApp
 {
@@ -11,7 +12,9 @@ namespace WarehouseApp
     {
         private const string ErrorMessage = "Неверный формат поля или значение. Введите значение заново.";
         private const string ClickAnyButtonMessage = "Нажмите любую клавишу, чтобы вернуться в меню.";
-        
+        private const string PurchaseInvoicePath = "purchaseInvoices";
+
+
         static void Main(string[] args)
         {
             Console.WindowWidth = 135;
@@ -26,7 +29,8 @@ namespace WarehouseApp
                 Console.WriteLine("2.Формирование расходной накладной");
                 Console.WriteLine("3.Список товаров на складе");
                 Console.WriteLine("4.Поиск товара");
-                Console.WriteLine("5.Выход");
+                Console.WriteLine("5.Просмотр приходных накладных");
+                Console.WriteLine("6.Выход");
                 ConsoleKey key = Console.ReadKey().Key;
 
                 if (key == ConsoleKey.D1)
@@ -61,7 +65,7 @@ namespace WarehouseApp
                             productList.Add(product);
                         }
 
-                        Console.Write("\n\nEnter - добавить еще один товар \n" +
+                        Console.Write("\nEnter - добавить еще один товар \n" +
                                       "Esc - вернуться в меню");
 
                         if (Console.ReadKey().Key != ConsoleKey.Enter)
@@ -181,6 +185,13 @@ namespace WarehouseApp
                     }
                 }
                 else if (key == ConsoleKey.D5)
+                {
+                    if (Directory.Exists(PurchaseInvoicePath))
+                    {
+                        Process.Start(PurchaseInvoicePath);
+                    }
+                }
+                else if (key == ConsoleKey.D6)
                 {
                     break;
                 }
