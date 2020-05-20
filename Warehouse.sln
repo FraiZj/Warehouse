@@ -3,12 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseLibrary", "WarehouseLibrary\WarehouseLibrary.csproj", "{CACCCD1E-5C7E-44BD-8494-A8D6912ECEB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseLibrary", "WarehouseLibrary\WarehouseLibrary.csproj", "{CACCCD1E-5C7E-44BD-8494-A8D6912ECEB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseApp", "WarehouseApp\WarehouseApp.csproj", "{D5C34541-59A7-4574-A2B4-BB745E5BE9E9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CACCCD1E-5C7E-44BD-8494-A8D6912ECEB1} = {CACCCD1E-5C7E-44BD-8494-A8D6912ECEB1}
 	EndProjectSection
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "WarehouseSetup", "WarehouseSetup\WarehouseSetup.vdproj", "{3E497430-4089-4D0A-8F72-11A9FA294A13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +26,8 @@ Global
 		{D5C34541-59A7-4574-A2B4-BB745E5BE9E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5C34541-59A7-4574-A2B4-BB745E5BE9E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5C34541-59A7-4574-A2B4-BB745E5BE9E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E497430-4089-4D0A-8F72-11A9FA294A13}.Debug|Any CPU.ActiveCfg = Debug
+		{3E497430-4089-4D0A-8F72-11A9FA294A13}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

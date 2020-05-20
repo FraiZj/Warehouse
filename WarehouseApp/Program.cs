@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using WarehouseLibrary.Models;
 
-// TODO: Добавить сохранение приходной и расходной в файл возможностью загрузить их в программу
-
 namespace WarehouseApp
 {
     class Program
@@ -188,16 +186,30 @@ namespace WarehouseApp
                 }
                 else if (key == ConsoleKey.D5)
                 {
-                    if (Directory.Exists(PurchaseInvoiceDirectoryPath))
+                    if (Directory.Exists(PurchaseInvoiceDirectoryPath) && Directory.GetFiles(SalesInvoicesDirectoryPath).Length > 0)
                     {
                         Process.Start(PurchaseInvoiceDirectoryPath);
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Список приходных накладных пуст.");
+                        Console.Write(ClickAnyButtonMessage);
+                        Console.ReadKey();
                     }
                 }
                 else if (key == ConsoleKey.D6)
                 {
-                    if (Directory.Exists(SalesInvoicesDirectoryPath))
+                    if (Directory.Exists(SalesInvoicesDirectoryPath) && Directory.GetFiles(SalesInvoicesDirectoryPath).Length > 0)
                     {
                         Process.Start(SalesInvoicesDirectoryPath);
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Список расходных накладных пуст.");
+                        Console.Write(ClickAnyButtonMessage);
+                        Console.ReadKey();
                     }
                 }
                 else if (key == ConsoleKey.D7)
