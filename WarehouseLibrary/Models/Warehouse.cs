@@ -23,15 +23,15 @@ namespace WarehouseLibrary.Models
         }
 
         /// <summary>
-        /// Проверяет есть ли на складе дубликат товара и возвращает его
+        /// Возвращает дубликаты товара
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        public Product DuplicateProduct(Product product)
+        public List<Product> DuplicateProducts(Product product)
         {
-            return Products.SingleOrDefault(p => p.Name == product.Name
+            return Products.Where((p => p.Name.ToLower() == product.Name.ToLower()
                                                  && p.Price == product.Price
-                                                 && p.Supplier.Name == product.Supplier.Name);
+                                                 && p.Supplier.Name.ToLower() == product.Supplier.Name.ToLower())).ToList();
         }
 
         /// <summary>

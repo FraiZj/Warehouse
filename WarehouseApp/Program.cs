@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using WarehouseLibrary.Models;
 
 namespace WarehouseApp
@@ -41,28 +42,38 @@ namespace WarehouseApp
 
                     while (true)
                     {
-                        var product = RegisterProduct(supplier);
-                        Product duplicate = warehouse.DuplicateProduct(product);
+                        Product registeredProduct = RegisterProduct(supplier);
+                        Product productDuplicates = DuplicateProduct(productList, registeredProduct);
+                        List<Product> warehousProductDuplicates = warehouse.DuplicateProducts(registeredProduct);
 
-                        if (duplicate != null)
+                        if (productDuplicates != null)
                         {
-
+                            warehouse.AddSomeCountOfProduct(productDuplicates, registeredProduct.Count);
+                        }
+                        else if (warehousProductDuplicates.Count > 0)
+                        {
+                            Console.Clear();
+                            warehouse.PrintProducts(warehousProductDuplicates);
                             Console.Write("\nНа складе находится такой же товар.\n" +
-                                              "1.Создать новую запись\n" +
-                                              "2.Добавить товары в одну запись");
-
+                                                  "1.Создать новую запись\n" +
+                                                  "2.Добавить товары в одну запись");
                             if (Console.ReadKey().Key == ConsoleKey.D1)
                             {
-                                productList.Add(product);
+                                productList.Add(registeredProduct);
                             }
                             else
                             {
-                                duplicateList.Add((product, duplicate));
+                                Console.Clear();
+                                warehouse.PrintProducts(warehousProductDuplicates);
+                                Console.WriteLine("Введите номер товара, к которому добавить новый товар.");
+                                int number = InputProductNumber(warehousProductDuplicates.Count);
+                                Product product = warehousProductDuplicates[number - 1];
+                                duplicateList.Add((registeredProduct, product));
                             }
                         }
                         else
                         {
-                            productList.Add(product);
+                            productList.Add(registeredProduct);
                         }
 
                         Console.Write("\nEnter - добавить еще один товар \n" +
@@ -176,6 +187,7 @@ namespace WarehouseApp
                         while (true)
                         {
                             Console.Clear();
+                            Console.WriteLine("Введите наименование товара");
                             string name = InputString("Наименование");
                             List<Product> wantedProducts = warehouse.SearchProducts(name);
 
@@ -211,7 +223,7 @@ namespace WarehouseApp
                                     warehouse.PrintProducts(wantedProducts);
                                     int number = InputProductNumber(wantedProducts.Count);
                                     int count = InputSalesProductCount(warehouse.Products[number - 1].Count);
-                                    Product product = warehouse.Products[number - 1];
+                                    Product product = wantedProducts[number - 1];
                                     warehouse.RemoveSomeCountOfProduct(product, count);
                                     soldProductList.Add((product, count));
 
@@ -412,6 +424,19 @@ namespace WarehouseApp
 
                 return value;
             }
+        }
+
+        /// <summary>
+        /// Возвращает дубликаты товара
+        /// </summary>
+        /// <param name="products"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        private static Product DuplicateProduct(List<Product> products, Product product)
+        {
+            return products.SingleOrDefault(p => p.Name.ToLower() == product.Name.ToLower()
+                                                 && p.Price == product.Price
+                                                 && p.Supplier.Name.ToLower() == product.Supplier.Name.ToLower());
         }
     }
 }

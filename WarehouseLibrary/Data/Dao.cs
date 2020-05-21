@@ -70,7 +70,7 @@ namespace WarehouseLibrary.Data
                 throw new ArgumentNullException(nameof(supply));
             }
 
-            var numberFiles = 0;
+            int numberFiles = 0;
 
             if (Directory.Exists(PurchaseInvoicesDirectoryPath))
             {
@@ -81,15 +81,15 @@ namespace WarehouseLibrary.Data
                 Directory.CreateDirectory(PurchaseInvoicesDirectoryPath);
             }
 
-            var path = $"{PurchaseInvoicesDirectoryPath}\\{(numberFiles + 1)}_{supply.Supplier.Name}_{supply.ReceiptDate.ToString("dd-MM-yyyy")}.txt";
+            string path = $"{PurchaseInvoicesDirectoryPath}\\{(numberFiles + 1)}_{supply.Supplier.Name}_{supply.ReceiptDate.ToString("dd-MM-yyyy")}.txt";
 
-            using (var wr = new StreamWriter(path))
+            using (StreamWriter wr = new StreamWriter(path))
             {
                 wr.WriteLine($"Приходная накладная от {supply.ReceiptDate.ToShortDateString()}");
                 wr.WriteLine($"Поставщик: {supply.Supplier.Name}\n");
                 wr.WriteLine($"{"№",5}{"Наименование",20}{"Ед. измер.",15}{"Количество",15}{"Цена",15}");
 
-                for (var i = 0; i < supply.Products.Count; i++)
+                for (int i = 0; i < supply.Products.Count; i++)
                 {
                     Product product = supply.Products[i];
                     wr.WriteLine($"{(i + 1),5}{product.Name,20}{product.Unit,15}{product.Count,15}{product.Price,15}");
@@ -117,7 +117,7 @@ namespace WarehouseLibrary.Data
                 throw new ArgumentNullException(nameof(products), "Список продуктов не может быть пустым или null.");
             }
 
-            var numberFiles = 0;
+            int numberFiles = 0;
 
             if (Directory.Exists(SalesInvoicesDirectoryPath))
             {
@@ -128,9 +128,9 @@ namespace WarehouseLibrary.Data
                 Directory.CreateDirectory(SalesInvoicesDirectoryPath);
             }
 
-            var path = $"{SalesInvoicesDirectoryPath}\\{(numberFiles + 1)}_{recipient}_{products[0].Item1.ReceiptDate.ToString("dd-MM-yyyy")}.txt";
+            string path = $"{SalesInvoicesDirectoryPath}\\{(numberFiles + 1)}_{recipient}_{products[0].Item1.ReceiptDate.ToString("dd-MM-yyyy")}.txt";
 
-            using (var wr = new StreamWriter(path))
+            using (StreamWriter wr = new StreamWriter(path))
             {
                 int counter = 1;
                 decimal totalCost = 0;
