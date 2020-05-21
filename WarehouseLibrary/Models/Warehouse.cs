@@ -198,7 +198,7 @@ namespace WarehouseLibrary.Models
         /// <returns></returns>
         public List<Product> SearchProducts(string name)
         {
-            return Products.Where(p => p.Name == name).ToList();
+            return Products.Where(p => p.Name.ToLower() == name.ToLower()).ToList();
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace WarehouseApp
     class Program
     {
         private const string ErrorMessage = "Неверный формат поля или значение. Введите значение заново.";
-        private const string ClickAnyButtonMessage = "Нажмите любую клавишу, чтобы вернуться в меню.";
+        private const string ClickAnyButtonMessage = "Нажмите любую клавишу, чтобы вернуться в меню";
         private const string PurchaseInvoiceDirectoryPath = "purchaseInvoices";
         private const string SalesInvoicesDirectoryPath = "salesInvoices";
 
@@ -17,7 +17,7 @@ namespace WarehouseApp
         static void Main(string[] args)
         {
             Console.WindowWidth = 135;
-            Console.Title = "Warehouse";
+            Console.Title = "Warehouse Accounting";
             Warehouse warehouse = new Warehouse();
             warehouse.Load();
 
@@ -27,7 +27,7 @@ namespace WarehouseApp
                 Console.WriteLine("1.Формирование приходной накладной");
                 Console.WriteLine("2.Формирование расходной накладной");
                 Console.WriteLine("3.Список товаров на складе");
-                Console.WriteLine("4.Поиск товара");
+                Console.WriteLine("4.Поиск товаров");
                 Console.WriteLine("5.Просмотр приходных накладных");
                 Console.WriteLine("6.Просмотр расходных накладных");
                 Console.WriteLine("7.Выход");
@@ -49,7 +49,7 @@ namespace WarehouseApp
 
                             Console.Write("\nНа складе находится такой же товар.\n" +
                                               "1.Создать новую запись\n" +
-                                              "2.Соединить товары в одну запись");
+                                              "2.Добавить товары в одну запись");
 
                             if (Console.ReadKey().Key == ConsoleKey.D1)
                             {
@@ -66,7 +66,7 @@ namespace WarehouseApp
                         }
 
                         Console.Write("\nEnter - добавить еще один товар \n" +
-                                      "Esc - вернуться в меню");
+                                      "Esc - вывести приходную накладную");
 
                         if (Console.ReadKey().Key != ConsoleKey.Enter)
                         {
@@ -100,9 +100,8 @@ namespace WarehouseApp
                     }
                     else
                     {
-
                         string recipient = InputString("Покупатель");
-                        List<(Product, int)> productList = new List<(Product, int)>();
+                        List<(Product, int)> soldProductList = new List<(Product, int)>();
 
                         while (true)
                         {
@@ -121,7 +120,7 @@ namespace WarehouseApp
                             int count = InputSalesProductCount(warehouse.Products[number - 1].Count);
                             Product product = warehouse.Products[number - 1];
                             warehouse.RemoveSomeCountOfProduct(product, count);
-                            productList.Add((product, count));
+                            soldProductList.Add((product, count));
 
                             if (warehouse.Products.Count == 0)
                             {
@@ -129,7 +128,7 @@ namespace WarehouseApp
                             }
 
                             Console.Write("Enter - продолжить ввод \n" +
-                                          "Esc - вернуться в меню");
+                                          "Esc - вывести расходную накладную");
                             if (Console.ReadKey().Key != ConsoleKey.Enter)
                             {
                                 break;
@@ -137,7 +136,7 @@ namespace WarehouseApp
                         }
 
                         warehouse.Save();
-                        warehouse.PrintSalesInvoice(recipient, productList);
+                        warehouse.PrintSalesInvoice(recipient, soldProductList);
                     }
 
                     Console.Write(ClickAnyButtonMessage);
@@ -161,26 +160,88 @@ namespace WarehouseApp
                 }
                 else if (key == ConsoleKey.D4)
                 {
-                    while (true)
+                    if (warehouse.Products.Count == 0)
                     {
                         Console.Clear();
-                        var name = InputString("Наименование");
-                        var products = warehouse.SearchProducts(name);
+                        Console.WriteLine("Склад пуст.");
+                        Console.Write(ClickAnyButtonMessage);
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        string recipient = InputString("Покупатель");
+                        List<(Product, int)> soldProductList = new List<(Product, int)>();
 
-                        if (products.Count == 0)
+                        while (true)
                         {
-                            Console.WriteLine("Товар не найден.");
-                        }
-                        else
-                        {
-                            warehouse.PrintProducts(products);
+                            Console.Clear();
+                            string name = InputString("Наименование");
+                            List<Product> wantedProducts = warehouse.SearchProducts(name);
+
+                            if (wantedProducts.Count == 0)
+                            {
+                                Console.WriteLine("Товар не найден.");
+                                Console.WriteLine("\nEnter - искать другой товар\n" +
+                                    "Esc - вывести расходную накладную");
+                                if (Console.ReadKey().Key == ConsoleKey.Enter)
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                warehouse.PrintProducts(wantedProducts);
+
+                                Console.WriteLine("\nEnter - добавить товар в расходную накладную\n" +
+                                    "Backspace - искать другой товар\n" +
+                                    "Esc - вывести расходную накладную");
+                                ConsoleKey key2 = Console.ReadKey().Key;
+                                if (key2 == ConsoleKey.Backspace)
+                                {
+                                    continue;
+                                }
+                                else if (key2 == ConsoleKey.Enter)
+                                {
+                                    Console.Clear();
+                                    warehouse.PrintProducts(wantedProducts);
+                                    int number = InputProductNumber(wantedProducts.Count);
+                                    int count = InputSalesProductCount(warehouse.Products[number - 1].Count);
+                                    Product product = warehouse.Products[number - 1];
+                                    warehouse.RemoveSomeCountOfProduct(product, count);
+                                    soldProductList.Add((product, count));
+
+                                    if (warehouse.Products.Count == 0)
+                                    {
+                                        break;
+                                    }
+
+                                    Console.Write("\nEnter - искать другой товар \n" +
+                                        "Esc - вывести расходную накладную");
+                                    if (Console.ReadKey().Key == ConsoleKey.Enter)
+                                    {
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+
+                                break;
+                            }
                         }
 
-                        Console.Write("\nEnter - искать другой товар \n" + 
-                                      "Esc - вернуться в меню");
-                        if (Console.ReadKey().Key != ConsoleKey.Enter)
+                        if (soldProductList.Count > 0)
                         {
-                            break;
+                            warehouse.Save();
+                            warehouse.PrintSalesInvoice(recipient, soldProductList);
+                            Console.Write(ClickAnyButtonMessage);
+                            Console.ReadKey();
                         }
                     }
                 }
