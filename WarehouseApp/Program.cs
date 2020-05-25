@@ -292,6 +292,7 @@ namespace WarehouseApp
                 }
                 else if (key == ConsoleKey.D7)
                 {
+                    warehouse.Save();
                     break;
                 }
             }
