@@ -22,6 +22,11 @@ namespace WarehouseApp
             Warehouse warehouse = new Warehouse();
             warehouse.Load();
 
+            if (warehouse.Name == null)
+            {
+                warehouse.ChangeName(InputString("Название склада"));
+            }
+
             while (true)
             {
                 Console.Clear();
