@@ -15,12 +15,6 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_069F64A288094BD700303E790A977532"
-        "OwnerKey" = "8:_34D85FA7B72844E9AEED314C3AB97AAD"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_0A87C0872F1A6D6DBF94E95ADD8675FC"
         "OwnerKey" = "8:_9596BE3C1D1BC65C7277A8010946D108"
         "MsmSig" = "8:_UNDEFINED"
@@ -70,13 +64,19 @@
         "Entry"
         {
         "MsmKey" = "8:_9596BE3C1D1BC65C7277A8010946D108"
-        "OwnerKey" = "8:_069F64A288094BD700303E790A977532"
+        "OwnerKey" = "8:_F23452B68F6A5D2D7CB182A0CB25F768"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_9D208E8CC7B64B8E8930A429CF16A2DC"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F23452B68F6A5D2D7CB182A0CB25F768"
+        "OwnerKey" = "8:_34D85FA7B72844E9AEED314C3AB97AAD"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -152,14 +152,6 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
-                "Items"
-                {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
-                    {
-                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
-                    }
-                }
             }
         }
         "Release"
@@ -184,14 +176,6 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
-                "Items"
-                {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
-                    {
-                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
-                    }
-                }
             }
         }
     }
@@ -222,37 +206,6 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_069F64A288094BD700303E790A977532"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:WarehouseLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_069F64A288094BD700303E790A977532"
-                    {
-                    "Name" = "8:WarehouseLibrary.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:WarehouseLibrary.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_DFF128C7EF4F42FA8FDAC8D628EBF270"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0A87C0872F1A6D6DBF94E95ADD8675FC"
             {
             "AssemblyRegister" = "3:1"
@@ -428,6 +381,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F23452B68F6A5D2D7CB182A0CB25F768"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:WarehouseLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_F23452B68F6A5D2D7CB182A0CB25F768"
+                    {
+                    "Name" = "8:WarehouseLibrary.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:WarehouseLibrary.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_DFF128C7EF4F42FA8FDAC8D628EBF270"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FCEF941637F88AE364E77F663E2BEAF7"
             {
             "AssemblyRegister" = "3:1"
@@ -514,9 +498,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Warehouse Accounting"
+        "ProductName" = "8:WarehouseSetup"
         "ProductCode" = "8:{CECDC8CF-A50A-4825-8D14-1FF3F62A74E1}"
-        "PackageCode" = "8:{3D87A55E-8DD2-40E9-A362-3A6622753BE7}"
+        "PackageCode" = "8:{69E79CE1-58C7-46B4-84EF-027786A640EE}"
         "UpgradeCode" = "8:{27B4A0A9-5025-4AD2-965E-B6FE2E2388EB}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -527,7 +511,7 @@
         "Manufacturer" = "8:Daniil Khyzhniak"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:Warehouse Accounting"
+        "Title" = "8:WarehouseSetup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Daniil Khyzhniak"
         "Keywords" = "8:"
@@ -1051,7 +1035,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_34D85FA7B72844E9AEED314C3AB97AAD"
             {
-            "SourcePath" = "8:..\\WarehouseApp\\obj\\Release\\WarehouseApp.exe"
+            "SourcePath" = "8:..\\WarehouseApp\\obj\\Debug\\WarehouseApp.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_DFF128C7EF4F42FA8FDAC8D628EBF270"
@@ -1079,7 +1063,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9D208E8CC7B64B8E8930A429CF16A2DC"
             {
-            "SourcePath" = "8:..\\WarehouseLibrary\\obj\\Release\\netstandard2.0\\WarehouseLibrary.dll"
+            "SourcePath" = "8:..\\WarehouseLibrary\\obj\\Debug\\netstandard2.0\\WarehouseLibrary.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_DFF128C7EF4F42FA8FDAC8D628EBF270"

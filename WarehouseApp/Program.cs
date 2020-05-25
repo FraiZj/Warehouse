@@ -22,11 +22,6 @@ namespace WarehouseApp
             Warehouse warehouse = new Warehouse();
             warehouse.Load();
 
-            if (warehouse.Name == null)
-            {
-                warehouse.ChangeName(InputString("Название склада"));
-            }
-
             while (true)
             {
                 Console.Clear();
@@ -186,6 +181,7 @@ namespace WarehouseApp
                     else
                     {
                         Console.Clear();
+                        string recipient = InputString("Покупатель");
                         List<(Product, int)> soldProductList = new List<(Product, int)>();
 
                         while (true)
@@ -233,7 +229,7 @@ namespace WarehouseApp
 
                                     if (warehouse.Products.Count == 0)
                                     {
-                                        break; 
+                                        break;
                                     }
 
                                     Console.Write("\nEnter - искать другой товар \n" +
@@ -255,8 +251,6 @@ namespace WarehouseApp
                         if (soldProductList.Count > 0)
                         {
                             warehouse.Save();
-                            Console.Clear();
-                            string recipient = InputString("Покупатель");
                             warehouse.PrintSalesInvoice(recipient, soldProductList);
                             Console.Write(ClickAnyButtonMessage);
                             Console.ReadKey();
@@ -293,7 +287,6 @@ namespace WarehouseApp
                 }
                 else if (key == ConsoleKey.D7)
                 {
-                    warehouse.Save();
                     break;
                 }
             }

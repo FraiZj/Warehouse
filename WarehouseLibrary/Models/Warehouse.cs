@@ -8,7 +8,6 @@ namespace WarehouseLibrary.Models
     [Serializable]
     public class Warehouse
     {
-        public string Name { get; private set; }
         public List<Product> Products { get; private set; }
         public List<Supplier> Suppliers { get; private set; }
         public List<Supply> Supplies { get; private set; }
@@ -21,16 +20,6 @@ namespace WarehouseLibrary.Models
             Products = new List<Product>();
             Suppliers = new List<Supplier>();
             Supplies = new List<Supply>();
-        }
-
-        public void ChangeName(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentNullException();
-            }
-
-            this.Name = name;
         }
 
         /// <summary>
@@ -70,7 +59,6 @@ namespace WarehouseLibrary.Models
             Console.Clear();
             Console.WriteLine($"Приходная накладная от {supply.ReceiptDate.ToShortDateString()}");
             Console.WriteLine($"Поставщик: {supply.Supplier.Name}\n");
-            Console.WriteLine($"Получатель: {this.Name}\n");
             Console.WriteLine($"{"№",5}{"Наименование",20}{"Ед. измер.",15}{"Количество",15}{"Цена",15}");
 
             for (var i = 0; i < supply.Products.Count; i++)
@@ -163,7 +151,6 @@ namespace WarehouseLibrary.Models
 
             Console.Clear();
             Console.WriteLine($"Расходная накладная от {DateTime.Now.ToShortDateString()}");
-            Console.WriteLine($"Отправитель: {this.Name}\n");
             Console.WriteLine($"Получатель: {recipient}\n");
 
             Console.WriteLine($"{"№",5}{"Наименование",20}{"Ед. измерения",15}{"Количество",15}" +

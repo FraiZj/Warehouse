@@ -45,7 +45,6 @@ namespace WarehouseLibrary.Data
 
                 var serializer = new BinaryFormatter();
                 Warehouse st = (Warehouse)serializer.Deserialize(fs);
-                _warehouse.Name = st.Name;
                 Copy(st.Products, _warehouse.Products);
                 Copy(st.Products, _warehouse.Products);
                 Copy(st.Suppliers, _warehouse.Suppliers);
