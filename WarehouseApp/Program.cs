@@ -34,14 +34,22 @@ namespace WarehouseApp
                 Console.WriteLine("2.Формирование расходной накладной");
                 Console.WriteLine("3.Список товаров на складе");
                 Console.WriteLine("4.Поиск товаров");
-                Console.WriteLine("5.Просмотр приходных накладных");
-                Console.WriteLine("6.Просмотр расходных накладных");
-                Console.WriteLine("7.Выход");
+                Console.WriteLine("5.Список поставщиков");
+                Console.WriteLine("6.Просмотр приходных накладных");
+                Console.WriteLine("7.Просмотр расходных накладных");
+                Console.WriteLine("8.Выход");
                 ConsoleKey key = Console.ReadKey().Key;
 
                 if (key == ConsoleKey.D1)
                 {
                     Supplier supplier = RegisterSupplier();
+                    Supplier duplicateSupplier = warehouse.GetDuplicateSupplier(supplier);
+
+                    if (duplicateSupplier != null)
+                    {
+                        supplier = duplicateSupplier;
+                    }
+
                     List<Product> productList = new List<Product>();
                     List<(Product, Product)> duplicateList = new List<(Product, Product)>();
 
@@ -49,11 +57,12 @@ namespace WarehouseApp
                     {
                         Product registeredProduct = RegisterProduct(supplier);
                         Product productDuplicates = DuplicateProduct(productList, registeredProduct);
-                        List<Product> warehousProductDuplicates = warehouse.DuplicateProducts(registeredProduct);
+                        List<Product> warehousProductDuplicates = warehouse.GetDuplicateProducts(registeredProduct);
 
                         if (productDuplicates != null)
                         {
                             warehouse.AddSomeCountOfProduct(productDuplicates, registeredProduct.Count);
+
                         }
                         else if (warehousProductDuplicates.Count > 0)
                         {
@@ -86,6 +95,7 @@ namespace WarehouseApp
 
                         if (Console.ReadKey().Key != ConsoleKey.Enter)
                         {
+                            supplier.AddSupliesCount();
                             break;
                         }
                     }
@@ -103,7 +113,7 @@ namespace WarehouseApp
 
                     warehouse.Save();
                     warehouse.PrintPurchaseInvoice(new Supply(supplier, productList));
-
+                    
                     Console.Write(ClickAnyButtonMessage);
                     Console.ReadKey();
                 }
@@ -264,6 +274,57 @@ namespace WarehouseApp
                 }
                 else if (key == ConsoleKey.D5)
                 {
+                    if (warehouse.Suppliers.Count == 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Список поставщиков пуст.");
+                        Console.Write(ClickAnyButtonMessage);
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        List<(Product, int)> soldProductList = new List<(Product, int)>();
+
+                        while (true)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Введите наименование поставщика");
+                            string name = InputString("Наименование");
+                            List<Supplier> wantedSuppliers = warehouse.SearchSupplier(name);
+
+                            if (wantedSuppliers.Count == 0)
+                            {
+                                Console.WriteLine("Поставщик не найден.");
+                                Console.WriteLine("\nEnter - искать другого поставщика\n" +
+                                    "Esc - вернуться в меню");
+                                if (Console.ReadKey().Key == ConsoleKey.Enter)
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                warehouse.PrintSuppliers(wantedSuppliers);
+                                Console.WriteLine("\nEnter - искать другого поставщика\n" +
+                                    "Esc - вернуться в меню");
+                                if (Console.ReadKey().Key == ConsoleKey.Enter)
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (key == ConsoleKey.D6)
+                {
                     if (Directory.Exists(PurchaseInvoiceDirectoryPath) && Directory.GetFiles(SalesInvoicesDirectoryPath).Length > 0)
                     {
                         Process.Start(PurchaseInvoiceDirectoryPath);
@@ -276,7 +337,7 @@ namespace WarehouseApp
                         Console.ReadKey();
                     }
                 }
-                else if (key == ConsoleKey.D6)
+                else if (key == ConsoleKey.D7)
                 {
                     if (Directory.Exists(SalesInvoicesDirectoryPath) && Directory.GetFiles(SalesInvoicesDirectoryPath).Length > 0)
                     {
@@ -290,8 +351,9 @@ namespace WarehouseApp
                         Console.ReadKey();
                     }
                 }
-                else if (key == ConsoleKey.D7)
+                else if (key == ConsoleKey.D8)
                 {
+                    warehouse.Save();
                     break;
                 }
             }

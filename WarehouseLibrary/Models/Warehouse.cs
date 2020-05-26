@@ -23,6 +23,10 @@ namespace WarehouseLibrary.Models
             Supplies = new List<Supply>();
         }
 
+        /// <summary>
+        /// Изменяет название склада
+        /// </summary>
+        /// <param name="name"></param>
         public void ChangeName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -38,11 +42,23 @@ namespace WarehouseLibrary.Models
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        public List<Product> DuplicateProducts(Product product)
+        public List<Product> GetDuplicateProducts(Product product)
         {
             return Products.Where((p => p.Name.ToLower() == product.Name.ToLower()
-                                                 && p.Price == product.Price
-                                                 && p.Supplier.Name.ToLower() == product.Supplier.Name.ToLower())).ToList();
+                                    && p.Price == product.Price
+                                    && p.Supplier.Name.ToLower() == product.Supplier.Name.ToLower())).ToList();
+        }
+
+        /// <summary>
+        /// Возвращает дубликат поставщика
+        /// </summary>
+        /// <param name="supplier"></param>
+        /// <returns></returns>
+        public Supplier GetDuplicateSupplier(Supplier supplier)
+        {
+            return Suppliers.SingleOrDefault(s => s.Name.ToLower() == supplier.Name.ToLower()
+                                            && s.PhoneNumber.ToLower() == supplier.PhoneNumber.ToLower()
+                                            && s.Address.ToLower() == supplier.Address.ToLower());
         }
 
         /// <summary>
@@ -57,7 +73,12 @@ namespace WarehouseLibrary.Models
             }
 
             Products.AddRange(supply.Products);
-            Suppliers.Add(supply.Supplier);
+
+            if (GetDuplicateSupplier(supply.Supplier) == null)
+            {
+                Suppliers.Add(supply.Supplier);
+            }
+
             Supplies.Add(supply);
         }
 
@@ -103,6 +124,25 @@ namespace WarehouseLibrary.Models
                 Console.WriteLine($"{(counter++),5}{product.Name,20}{product.Unit,15}{product.Count,15}" +
                                   $"{product.Price,15}{product.ReceiptDate.ToShortDateString(),20}" +
                                   $"{product.Supply.Supplier.Name,20}{product.Supply.Supplier.PhoneNumber,20}");
+            }
+        }
+
+        /// <summary>
+        /// Выводит список поставщиков
+        /// </summary>
+        /// <param name="suppliers"></param>
+        public void PrintSuppliers(List<Supplier> suppliers)
+        {
+            int counter = 1;
+
+            Console.WriteLine($"{"№",5}{"Наименование",20}{"Номер телефона",20}" +
+                              $"{"Адрес",15}{"Количество поставок",25}");
+
+            foreach (Supplier supplier in suppliers)
+            {
+
+                Console.WriteLine($"{(counter++),5}{supplier.Name,20}{supplier.PhoneNumber,20}" +
+                                  $"{supplier.Address,15}{supplier.SuppliesCount,25}");
             }
         }
 
@@ -212,6 +252,11 @@ namespace WarehouseLibrary.Models
         public List<Product> SearchProducts(string name)
         {
             return Products.Where(p => p.Name.ToLower() == name.ToLower()).ToList();
+        }
+
+        public List<Supplier> SearchSupplier(string name)
+        {
+            return Suppliers.Where(s => s.Name.ToLower() == name.ToLower()).ToList();
         }
 
         /// <summary>

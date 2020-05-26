@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WarehouseLibrary.Models
 {
@@ -8,6 +9,7 @@ namespace WarehouseLibrary.Models
         public string Name { get; internal set; }
         public string PhoneNumber { get; internal set; }
         public string Address  { get; internal set; }
+        public int SuppliesCount { get; internal set; }
 
         /// <summary>
         /// Инициализирует новый экземпляр класса Supplier
@@ -32,8 +34,13 @@ namespace WarehouseLibrary.Models
             Name = name;
             PhoneNumber = phoneNumber;
             Address = address;
+            SuppliesCount = 0;
         }
 
+        public void AddSupliesCount()
+        {
+            SuppliesCount++;
+        }
         public override string ToString()
         {
             return Name;
