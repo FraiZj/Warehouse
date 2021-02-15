@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WarehouseLibrary\WarehouseLibrary.csproj">
+    <ProjectReference Include="..\WarehouseLibrary\Warehouse.BLL.csproj">
       <Project>{CACCCD1E-5C7E-44BD-8494-A8D6912ECEB1}</Project>
-      <Name>WarehouseLibrary</Name>
+      <Name>Warehouse.BLL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
